@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewpoint">
+    <title>Customization map</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/index.css">
+    
+    </head>
+    <body>
+        <div id="landing" >
+            <div class="ui stackable secondary menu" id="menu" style="background-image: url('img/background.png');background-size: cover !important;height: 120px;">
+                <div class="item"><i class="building primary huge icon" ></i></div>
+                <a class="item" id="header" href="/">首頁</a>
+                <a class="item" id="header" href="/search">租房</a>
+                <a class="item" id="header" href="/upload">出租</a>
+                {{!-- <a class="item" id="header" href="#">{{login_username}}</a> --}}
+                <div class="right item">
+                    <div class="ui stackable list">
+                        <div class="item">
+                            <div class="right floated content">
+                                <form method="POST" action="/logout">
+                                    <button class="ui inverted basic white button" style="margin-left: 20px;" type="submit">登出</button>
+                                </form>                               
+                            </div>
+                        </div>   
+                    </div>
+                </div>
+        </div>
+            <div class="ui two column centered grid">
+                <div class="center aligned four wide column">
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <form class= "ui form" id="query_form" action="/query_house" method="POST">
+                        <div class="inline field">
+                            <label >地區</label>
+                            <select class="ui dropdown" style="width: 145px;" name="area">
+                                <option value="台南">台南</option>
+                                <option value="中西區">中西區</option>
+                                <option value="東區">東區</option>
+                                <option value="南區">南區</option>
+                                <option value="北區">北區</option>
+                                <option value="安平區">安平區</option>
+                                <option value="安南區">安南區</option>
+                                <option value="永康區">永康區</option>
+                                <option value="歸仁">歸仁</option>
+                                <option value="新化">新化</option>
+                                <option value="左鎮">左鎮</option>
+                            </select>
+                        </div>
+                        <div class="inline field">
+                            <label >格局</label>
+                            <select class="ui dropdown" style="width: 145px;" name="structure">
+                                <option value="0,1,2,3,4">格局</option>
+                                <option value="0">雅房</option>
+                                <option value="1">套房</option>
+                                <option value="2,3,4">家庭式</option>
+                            </select>
+                        </div>
+                        <div class="inline field">
+                            <label style="padding: 2px;">價格:</label>
+                            <input style="width: 125px;"type="text" name="price" placeholder="$不限">
+                            <label >以下</label>
+                        </div>
+                        <div class="inline field">
+                            <input type="checkbox" name="fire">
+                            <label>開火</label>
+                        </div>
+                        <div class="inline field">
+                            <input type="checkbox" name="pet">
+                            <label>寵物</label>
+                            
+                        </div>
+                        <button class="ui center floated button" style="width: 125px;" id="query_btn" type="submit">查詢</button>
+                        
+                    </form>
+                    
+                </div>
+                
+                <div class="twelve wide column">
+                    <br>
+                    <br>
+                    <h2 class="ui header" >
+                        <i class="home icon"></i>
+                        <div class="content" >
+                        租屋清單
+                        </div>
+                    </h2>
+                    <div class="ui divider" ></div>
+                    <h5 class="ui header" style="text-align: right; width: 100%; padding-right: 20px;padding-bottom: 20px;margin-top: 10px;">
+                        <div class="content">{{num_of_data}}</div>
+                    </h5>                    
+                    <div class="ui stackable four column grid">
+                        {{#each data}}
+                            <form class="column" style="width: 300px;" action="/query_house/house_detail_page" method="POST">
+                                <div class="ui large image">
+                                    <img src="{{picture1}}">
+                                </div>
+                                <div class="middle aligned content">
+                                    <div class="header">
+                                        <i class="map marker alternate icon"></i>
+                                        <label>{{rigion}}</label>
+                                        {{!-- <label>{{../area}}</label> --}}
+                                        <br>
+                                        <label id="address">{{address}}</label>
+                                        <br>
+                                        <label id="structures">{{structures}}</label>
+                                        <input type="hidden" name="house_num" value="{{house_num}}"/>
+                                    </div>
+                                    <br>
+                                    <div class="extra">
+                                    <button class="ui right floated button" type="submit" style="color:#4183c4;">
+                                        {{price}}元/月
+                                    </button>                                    
+                                    </div>
+                                </div>
+                            </form>
+                        {{/each}}
+                      </div>
+                    
+                </div>
+            
+        
+        </div>
+        
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
+        <script src="./js/app.js"></script>
+        
+        
+    </body>
+    </html>

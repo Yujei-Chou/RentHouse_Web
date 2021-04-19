@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewpoint">
+    <title>Customization map</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/index.css">
+    
+    </head>
+    <body>
+        <div id="landing" >
+            <div class="ui stackable secondary menu" id="menu" style="background-image: url('img/background.png');background-size: cover !important;height: 120px;">
+                <div class="item"><i class="building primary huge icon" ></i></div>
+                <a class="item" id="header" href="/">首頁</a>
+                <a class="item" id="header" href="/search">租房</a>
+                <a class="item" id="header" href="/upload">出租</a>
+                {{!-- <a class="item" id="header" href="#">{{login_username}}</a> --}}
+                <div class="right item">
+                    <div class="ui stackable list">
+                        <div class="item">
+                            <div class="right floated content">
+                                <form method="POST" action="/logout">
+                                    <button class="ui inverted basic white button" style="margin-left: 20px;" type="submit">登出</button>
+                                </form>                               
+                            </div>
+                        </div>   
+                    </div>
+                </div>
+        </div>
+        
+            <div class="ui two column centered grid">
+                
+                <div class="left aligned four wide column">
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <div class="inline field" >
+                            
+                            <h3 >上傳照片</h3>
+                            <br>
+                            <div id="uplaod-wrap">
+
+                                <iframe src="http://luffy.ee.ncku.edu.tw/~jamie/imgur/test.html" width="200px" height="300px" id="son"></iframe>
+                                <br>
+                                <br>
+
+                            </div>
+                            
+                        </div>
+                    </div>
+                   
+                <div class="left aligned eight wide column">
+                    <br>
+                    <br>
+                    <div id="upload" >
+                        <form class="ui form" method="POST"  id = "upload_data" enctype="multipart/form-data"></form>
+                        <br>
+                        <br>
+                        
+                            
+                            <h2 class="ui header" >
+                            <div class="content" >
+                                <i class="home large icon"></i>
+                            出租資訊
+                            </div>
+                            </h2>
+                                        
+                    <div class= "ui list" >
+                        <div class="inline field">
+                            <label >地區</label>
+                            <select class="ui dropdown" id="region" style="width: 80%;">
+                                <option value="台南">台南</option>
+                                <option value="中西區">中西區</option>
+                                <option value="東區">東區</option>
+                                <option value="南區">南區</option>
+                                <option value="北區">北區</option>
+                                <option value="安平區">安平區</option>
+                                <option value="安南區">安南區</option>
+                                <option value="永康區">永康區</option>
+                                <option value="歸仁">歸仁</option>
+                                <option value="新化">新化</option>
+                                <option value="左鎮">左鎮</option>
+                            </select>
+                        </div>
+                        <br>
+                        <div class="inline field">
+                            <label >類型</label>
+                            <select class="ui dropdown" id="house_type" style="width: 80%;">
+                                <option value="0,1,2,3,4">不限</option>
+                                <option value="0">雅房</option>
+                                <option value="1">套房</option>
+                                <option value="2,3,4">家庭式</option>
+                            </select>
+                        </div>
+                        <br>
+                        <div class="地址">
+                            <i class="map pin icon"></i>
+                            <label >地址：</label >
+                            <input style="width: 75%; "type="text" name="address" placeholder="台南">
+                            
+                        </div>
+                        <br>
+                        <div class="inline field">
+                            <label ><i class="bed icon"></i>格局：</label>
+                            <input style="width: 75%;"type="text" name="type" placeholder="機房" >
+                            
+                        </div>
+                        <br>
+                        <div class="inline field">
+                            <label ><i class="dollar sign icon"></i>價格：</label>
+                            <input style="width: 75%;"type="number" name="price" placeholder="$元/月">
+                            
+                        </div>
+                        <br>
+                        <div class="inline field">
+                            <div >
+                                <input type="checkbox" name="fire" id="fire">
+                                <label  style="padding-right: 10%;"><i class="fire icon"></i> 開火</label>
+                                <input type="checkbox" name="pet" id="pet">
+                                <label><i class="paw icon"></i> 寵物</label>
+                            </div>
+
+                            <div >
+                               
+                            </div>
+                            
+                        </div>
+                        <br>
+                            
+                            <div class="inline field">
+                                <label >描述 : </label>
+                                <textarea style="width: 80%;height:150px;"type="text" name="house_info" placeholder="" id="house_info"></textarea>
+                            </div>
+                            <br>
+                            <div class="inline field" id ="submit_btn">
+                            <button class="ui primary button" type="submit" id="data_submit" >Submit</button>
+                            <button type="reset" class="ui button" id="clear_btn">Clear</button>
+                            </div>
+                        
+                    </div>
+                    
+                </div>
+                
+            </div>    
+ 
+            
+        
+            
+        </div>
+        </div>
+
+        <script>
+            var loadFile = function(event) {
+                var image = document.getElementById('output');
+                image.src = URL.createObjectURL(event.target.files[0]);
+            };
+        </script>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>    
+        <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
+        <script src="./js/app.js"></script>
+        
+        
+        
+    </body>
+    </html>

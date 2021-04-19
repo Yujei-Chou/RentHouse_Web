@@ -1,0 +1,58 @@
+#box{
+    padding: 2em;
+}
+#landing{
+    height: 150vh;
+    width: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover !important;
+}
+
+#header{
+    color: white !important;
+    font-weight: bolder;
+    font-size: large;
+    font-family: LiHei Pro Medium;
+}
+
+.container{
+    border: 3px, gray;
+    margin: 1em;
+}
+
+.pr{
+    position: relative;
+}
+
+#map {
+    height: 300px;  
+    width: 100%;  
+    padding: 2%;
+}
+
+#owner{
+    width: 100%;
+    border-width: 2px;
+    border-color: rosybrown;
+    border-style: solid;
+    padding: 6px;
+    text-align: right;
+}
+img{
+    -webkit-transition: width 0.25s ease-in-out;
+    -moz-transition: width 0.25s ease-in-out;
+    -o-transition: width 0.25s ease-in-out;
+    transition: width 0.25s ease-in-out;
+    max-width:100%;
+    max-height:100%;
+}   
+div .hidden{
+    display: none;
+}
+.error {
+    color: red;
+}
+#house_details{
+    font-size: medium;
+}

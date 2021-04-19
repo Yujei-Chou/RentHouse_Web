@@ -1,0 +1,72 @@
+#beacon{
+  opacity: 0;
+  position: absolute;
+}
+  .ui.header{
+    margin-bottom: 10px;
+    z-index: 2;
+  }
+  .make_map{
+    margin-left: 30vw;
+    margin-top: 4vh;
+    
+  }
+  #landing{
+    height: 100vh;
+    width: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+#menu, #filter{
+    background: rgba(216, 177, 105, 0.925);
+    margin: 0em;
+    font-weight: bold;
+    
+}
+#header{
+  color: white !important;
+}
+
+.selectPublic{
+  width: 100px;
+  height: auto;
+}
+
+#list{
+  height: 100%;
+  position: absolute;
+  top:85px;
+}
+.nav-tabs > li > a {
+  display:inline-block;
+}
+
+.nav-tabs > li > span {
+  display:none;
+  cursor:pointer;
+  position:absolute;
+  right: 6px;
+  top: 8px;
+  color: red;
+}
+
+.nav-tabs > li:hover > span {
+  display: inline-block;
+}
+.field select {
+    
+	width: 158px;
+	display: inline-block;
+  }
+  .modal-dialog{
+
+overflow-y: initial !important
+
+}
+.modal-body {
+    overflow-y: scroll;
+}
+.error {
+    color: red;
+}

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewpoint">
+    <title>Customization map</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" rel="stylesheet" type="text/css">
+    <link href="../css/index.css" rel="stylesheet" >
+    <link href="../css/style.css" rel="stylesheet" >
+    
+    </head>
+    <body>
+        <div id="landing" >
+            <div class="ui stackable secondary menu" id="menu" style="background-image: url('../img/background.png');background-size: cover !important;height: 120px;">
+                <div class="item"><i class="building primary huge icon" ></i></div>
+                <a class="item" id="header" href="/">首頁</a>
+                <a class="item" id="header" href="/search">租房</a>
+                <a class="item" id="header" href="/upload">出租</a>
+                <div class="right item">
+                    <div class="ui stackable list">
+                        <div class="item">
+                            <div class="right floated content">
+                                <form method="POST" action="/logout">
+                                    <button class="ui inverted basic white button" style="margin-left: 20px;" type="submit">登出</button>
+                                </form>                               
+                            </div>
+                        </div>   
+                    </div>
+                </div>
+        </div>
+            <div class="ui two column centered stackable grid">
+                <div class="center aligned eight wide column" id="images">
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                   
+                    <img src="{{data.picture2}}" alt="house1" >
+                    </div>
+                    
+               
+                
+                <div class="four wide column" id="house_details">
+                    <br>
+                    <br>
+                    <h2 class="ui header" >
+                        <i class="home icon"></i>
+                        <div class="content" >
+                        租屋資訊
+                        </div>
+                        <p id="address">{{data.address}}</p>
+                    </h2>
+                    <div id="map"></div>
+                    <h2>{{data.structures}}</h2>
+                    
+                    {{!-- <h3>房東提供</h3> --}}
+                    <label id="house_info" style="white-space: pre-line">
+                      {{data.house_info}}
+                    </label>                                        
+                    <label id="pet">寵物：{{data.pet}}</label>
+                    <br>
+                    <label id="fire">開火：{{data.fire}}</label>
+                    <h1 id="price">{{data.price}}元/月</h1>
+
+                    <div id="owner" class="ui two column grid">
+                      <div class="four wide column">
+                        <i class="huge user icon" style="padding: 0px;"></i>
+                      </div>
+                      <div class="twelve wide column">
+                        <h2>屋主</h2>
+                        <label id="contact">{{data.phone}}</label>
+                        {{!-- <label id="contact-gmail">{{data.email}}</label> --}}
+                        <div><!--給如果要放聊天室的按鈕--></div>
+                      </div>
+                      
+                    </div>
+                </div>
+            
+        
+        </div>
+        
+        </div>
+        <script>
+          // Initialize and add the map
+          function initMap() {
+              // The location of Uluru
+              
+              var ncku = {lat: 22.989340 , lng: 120.215830};
+              var map = new google.maps.Map(
+                  document.getElementById('map'), {zoom: 18, center: ncku});
+              // The marker, positioned at Uluru
+              var marker1 = new google.maps.Marker({position: ncku, map: map});
+
+             
+              var map = document.getElementById('map')
+              var address = document.getElementById('address').innerHTML;
+              //var address = "台南市東區新樓街41號5樓";
+              console.log(address)
+              geocoder = new google.maps.Geocoder();
+              codeAddress(geocoder, map);
+
+              function codeAddress(geocoder, map) {
+                geocoder.geocode({'address': address}, function(results, status) {
+                  if (status === 'OK') {
+                    var marker = new google.maps.Marker({
+                      map: map,
+                      position: results[0].geometry.location
+                    });
+                  } else {
+                    alert('Geocode was not successful for the following reason: ' + status);
+                  }
+                  console.log(results[0].geometry.location)
+                });
+              }
+          }
+          
+        </script>
+
+        <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrH6PFm6YsUakE6OxkTi3ekc_bp827osQ&callback=initMap">
+        </script>
+        <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
+        <script async defersrc="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrH6PFm6YsUakE6OxkTi3ekc_bp827osQ&callback=initMap"></script>
+                <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+        <script src="./js/app.js"></script>
+
+        
+    </body>
+    </html>
