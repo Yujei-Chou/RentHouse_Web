@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 const express = require('express')
-const config = require('./dist/js/config.js')
+const config = require('./config/db.js')
 const mysql = require('mysql')
 const session = require('express-session')
 const SESS_NAME = 'ssh! this is a secret string'
