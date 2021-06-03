@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewpoint">
+    <title>使用者頁面</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" rel="stylesheet" type="text/css">
+    <link href="css/index.css" rel="stylesheet" >
+    
+    </head>
+    <body>
+      <div id="landing" >
+        <div class="ui stackable secondary menu" id="menu" style="background-image: url('img/background.png');background-size: cover !important;height: 120px;">
+            <div class="item"><i class="building primary huge icon" ></i></div>
+            <a class="item" id="header" href="/">首頁</a>
+            <a class="item" id="header" href="/search">租房</a>
+            <a class="item" id="header" href="/upload">出租</a>
+            {{!-- <a class="item" id="header" href="#">{{login_username}}</a> --}}
+            <div class="right item">
+                <div class="ui stackable list">
+                    <div class="item">
+                        <div class="right floated content">
+                            <form method="POST" action="/logout">
+                                <button class="ui inverted basic white button" style="margin-left: 20px;" type="submit">登出</button>
+                            </form>                               
+                        </div>
+                    </div>   
+                </div>
+            </div>
+    </div>
+            <div class="ui stackable two column centered grid">
+                <div class="center aligned four wide column">
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <div style="align-items: center; ">
+                      <img style="height: 200px;" src="img/user.jpeg">
+                      <h3 id="user_name">陳先生</h3>
+                      <h3 id="user_num">0901231234</h3>
+                      <button class="ui big white button" id="edit_button">編輯</button>
+                      <button class="ui big white button" style="display: none;" id="done_button">完成</button>
+                    </div>
+                    
+                </div>
+                
+                <div class="twelve wide column">
+                    <br>
+                    <br>
+                    <h2 class="ui header" >
+                        <i class="home icon"></i>
+                        <div class="content" >
+                        租屋清單
+                        </div>
+                    </h2>
+                    <div class="ui divider" ></div>
+                    <h5 class="ui header" style="text-align: right; width: 100%; padding-right: 20px;padding-bottom: 20px;margin-top: 10px;">
+                        <div class="content"> 已上傳3間房屋</div>
+                    </h5>
+                    
+                    <div class="ui stackable four column grid">
+                        <div class="column" style="width: 300px;">
+                            <div class="ui large image">
+                                <img style="z-index: 1; top: 10px; " src="https://i.imgur.com/sxd2Q9Q.jpg">
+                                <img style="z-index: 3; top: -15px;left:250px;position: absolute; height: 35px; display: none;"class="x" src="img/delete.png">
+                              </div>
+                              <div class="middle aligned content">
+                                <div class="header">
+                                    <i class="map marker alternate icon"></i>
+                                    <label>東區</label>
+                                    <br>
+                                  <label id="address">地址:台南市東區新樓街41號5樓</label>
+                                  <br>
+                                  <label id="structures">1套房</label>
+                                </div>
+                                <br>
+                                <div class="extra">
+                                  <div  > 
+                                    <a class="ui right floated button" name="price_button" href="house-detail.html">4500元/月</a> 
+                                  </div>
+                                </div>
+                              </div>
+                        </div>
+                        <div class="column" style="width: 300px;">
+                            <div class="ui large image">
+                                <img style="z-index: 1; top: 10px;"src="https://i.imgur.com/WQ7AgTt.jpg">
+                                <img style="z-index: 3; top: -15px;left:250px;position: absolute; height: 35px;display: none; " class="x" src="img/delete.png">
+                              </div>
+                              <div class="middle aligned content">
+                                <div class="header">
+                                    <i class="map marker alternate icon"></i>
+                                    <label>北區</label>
+                                    <label id="address">地址:台南市北區公園北路116巷2弄28號</label>
+                                    <br>
+                                    <label id="structures">家庭式套房1套房3雅房2衛1廳1廚3陽台</label>
+                                </div>
+                                <br>
+                                <div class="extra">
+                                  <div >
+                                    <a class="ui right floated button" name="price_button" href="house-detail.html">12000元/月</a>
+                                  </div>
+                                </div>
+                              </div>
+                        </div>
+                        <div class="column" style="width: 300px;">
+                            <div class="ui large image">
+                                <img style="z-index: 1; top: 10px;" src="https://i.imgur.com/jGzNrLP.jpg">
+                                <img style="z-index: 3; top: -15px;left:250px;position: absolute; height: 35px; display: none;" class="x" src="img/delete.png">
+                              </div>
+                              <div class="middle aligned content">
+                                <div class="header">
+                                    <i class="map marker alternate icon"></i>
+                                    <label>東區</label>
+                                    <br>
+                                    <label id="address">地址:台南市東區東平路241號</label>
+                                    <br>
+                                    <label id="structures">1雅房</label>
+                                </div>
+                                <br>
+                                <div class="extra">
+                                  <div >
+                                    <a class="ui right floated button" name="price_button" href="house-detail.html">5500元/月</a>
+                                  </div>
+                                </div>
+                              </div>
+                        </div>
+                        
+                      </div>
+                    
+                </div>
+            
+        
+        </div>
+        
+        </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+        $(document).ready(function(){
+          $("#edit_button").click(function(){
+            $(".x").show();
+            $("#edit_button").hide();
+            $("#done_button").show();
+          })
+          $("#done_button").click(function(){
+            $(".x").hide();
+            $("#edit_button").show();
+            $("#done_button").hide();
+          })
+        });
+        </script>
+
+        <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
+        
+        
+    </body>
+</html>

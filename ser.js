@@ -77,7 +77,9 @@ app.get("/upload", CheckNotAuthenticated, (req, res) => {
   res.render('upload')
 })
 
-
+app.get("/user_profile", CheckNotAuthenticated, (req, res) => {
+  res.render('user_profile')
+})
 
 
 //connect to mysql
@@ -191,7 +193,7 @@ app.get('/upload_house', (req, res) => {
   console.log(req.query.house_info)
   console.log(req.session.userID)
 
-  connection.query(`INSERT INTO house_info(address,structures,price,kind,fire,pet,house_info,user_num,picture1,picture2,rigion) VALUES ('${req.query.address}','${req.query.type}',${req.query.price},${req.query.house_type},${req.query.fire},${req.query.pet},'${req.query.house_info}',${req.session.userID},'${req.query.picture1}','${req.query.picture2}','${req.query.region}')`, (err, result) => {
+  connection.query(`INSERT INTO house_info(address,structures,price,kind,fire,pet,house_info,user_num,picture1,picture2,region) VALUES ('${req.query.address}','${req.query.type}',${req.query.price},${req.query.house_type},${req.query.fire},${req.query.pet},'${req.query.house_info}',${req.session.userID},'${req.query.picture1}','${req.query.picture2}','${req.query.region}')`, (err, result) => {
     if (err) console.log('fail to insert:', err)
   })
 
