@@ -5,6 +5,7 @@
     <meta content="width=device-width, initial-scale=1" name="viewpoint">
     <title>Customization map</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" rel="stylesheet" type="text/css">
     <link href="../css/index.css" rel="stylesheet" >
     <link href="../css/style.css" rel="stylesheet" >
@@ -55,7 +56,7 @@
                     </h2>
                     <div id="map"></div>
                     <h2>{{data.structures}}</h2>
-                    
+
                     {{!-- <h3>房東提供</h3> --}}
                     <label id="house_info" style="white-space: pre-line">
                       {{data.house_info}}
@@ -70,13 +71,15 @@
                         <i class="huge user icon" style="padding: 0px;"></i>
                       </div>
                       <div class="twelve wide column">
-                        <h2>屋主</h2>
+                        <h2 id="mas">屋主</h2>
                         <label id="contact">{{data.phone}}</label>
                         {{!-- <label id="contact-gmail">{{data.email}}</label> --}}
                         <div><!--給如果要放聊天室的按鈕--></div>
                       </div>
                       
                     </div>
+                   <p id="lat">{{data.lat}}</p> 
+                   <p id="lng">{{data.lng}}</p> 
                 </div>
             
         
@@ -84,11 +87,17 @@
         
         </div>
         <script>
+           
+        
+          
+          //console.log(!{JSON.stringify(data)})
           // Initialize and add the map
           function initMap() {
+              var lat=(parseFloat(document.getElementById('lat').innerHTML))
+              var lng=(parseFloat(document.getElementById('lng').innerHTML))
+              console.log(lat)
               // The location of Uluru
-              
-              var ncku = {lat: 22.989340 , lng: 120.215830};
+              var ncku = {lat:lat  , lng:lng};
               var map = new google.maps.Map(
                   document.getElementById('map'), {zoom: 18, center: ncku});
               // The marker, positioned at Uluru
@@ -128,7 +137,7 @@
         <script async defersrc="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrH6PFm6YsUakE6OxkTi3ekc_bp827osQ&callback=initMap"></script>
                 <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
         <script src="./js/app.js"></script>
-
+        
         
     </body>
     </html>

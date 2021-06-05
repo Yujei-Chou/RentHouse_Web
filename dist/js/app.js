@@ -66,6 +66,9 @@ function check() {
 
 let fireCheck=0;
 let petCheck=0;
+var lat;
+var lng;
+
 $("#fire").click(function(){
     fireCheck = 1; 
 });
@@ -107,8 +110,10 @@ $('#data_submit').click((event) => {
         
     }
 
-
-    $.get('/upload_house', {
+    $.ajax({
+        type: "POST",
+        url: "upload_house",
+        data:{
         house_type: pattern,
         region: $('#region').val(),
         address: $('input[name=address]').val(),
@@ -117,13 +122,17 @@ $('#data_submit').click((event) => {
         fire:fireCheck,
         pet:petCheck,
         house_info:$('#house_info').val(),
-        // picture1:img1,
-        // picture2:img2,
-
-      }, (data) => {
+        picture1:$('#picURL').attr('url'),
+        picture2:$('#picURL2').attr('url'),
+        lat:lat,
+        lng:lng
+        },
+        success: function (data){  
         console.log(data)
         alert('上傳成功')
+        }
       })
+
 })
 
 $("#clear_btn").click(function(){
@@ -138,3 +147,58 @@ $("#clear_btn").click(function(){
   $("#pet").attr("checked", false);
 
 });
+
+$('body').on('change', '#upload', function(){
+    readURL(this)
+  })
+$('body').on('change', '#upload2', function(){
+    readURL2(this)
+  })
+
+  function readURL(input){
+	if(input.files && input.files[0]){
+
+			
+		var reader = new FileReader();
+		
+		reader.onload = function (e) {
+            $("#picURL").attr('url', e.target.result);
+		}
+		reader.readAsDataURL(input.files[0]);
+	}
+}
+  function readURL2(input){
+	if(input.files && input.files[0]){
+
+			
+		var reader = new FileReader();
+		
+		reader.onload = function (e) {
+            $("#picURL2").attr('url', e.target.result);
+		}
+		reader.readAsDataURL(input.files[0]);
+	}
+}
+
+var geocoder;
+
+function initMap() {
+    geocoder = new google.maps.Geocoder();
+}
+    
+function codeAddress() {
+    var address = document.getElementById("address").value;
+    geocoder.geocode({
+        'address': address
+    }, function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+            // 緯度：results[0].geometry.location.lat()
+            // 經度：results[0].geometry.location.lng()
+            lat=results[0].geometry.location.lat();
+            lng=results[0].geometry.location.lng();
+            alert("lat=" + results[0].geometry.location.lat() + ",lng=" + results[0].geometry.location.lng());
+        } else {
+            alert("Geocode was not successful for the following reason: " + status);
+        }
+    });
+}
