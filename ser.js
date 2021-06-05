@@ -51,7 +51,14 @@ const CheckAuthenticated = (req, res, next) => {
 
 //route
 app.get("/", (req, res) => {
-  res.render('index')
+  if(req.session.userID){
+    connection.query(`SELECT username, user_num FROM user_info WHERE user_num=${req.session.userID}`, (err, result) =>{
+      if (err) console.log('fail to select:', err)
+      res.render('index', {'log_status': 'login', 'user_info': result[0]})
+    })  
+  }else{
+    res.render('index')
+  }
 })
 
 app.get("/login",CheckAuthenticated ,(req, res) => {
@@ -70,11 +77,18 @@ app.get("/query_house/house-detail", (req, res) => {
 
 
 app.get("/search", CheckNotAuthenticated, (req, res) => {
-  res.render('search')
+  connection.query(`SELECT username, user_num FROM user_info WHERE user_num=${req.session.userID}`, (err, result) =>{
+    if (err) console.log('fail to select:', err)
+    res.render('search', {'user_info': result[0]})
+  })  
+
 })
 
 app.get("/upload", CheckNotAuthenticated, (req, res) => {
-  res.render('upload')
+  connection.query(`SELECT username, user_num FROM user_info WHERE user_num=${req.session.userID}`, (err, result) =>{
+    if (err) console.log('fail to select:', err)
+    res.render('upload', {'user_info': result[0]})
+  })
 })
 
 app.get("/user_profile", CheckNotAuthenticated, (req, res) => {
@@ -100,8 +114,10 @@ app.post('/',CheckAuthenticated ,(req, res) => {
     if (err) console.log('fail to insert:', err)
     if (result.length == 1){
       req.session.userID = result[0].user_num
-      console.log(req.session)
-      res.render('index')
+      connection.query(`SELECT username, user_num FROM user_info WHERE user_num=${req.session.userID}`, (err, result) =>{
+        if (err) console.log('fail to select:', err)
+        res.render('index', {'log_status': 'login', 'user_info':result[0]})
+      })
     }else{
       console.log('wrong!')
     }
@@ -124,45 +140,33 @@ app.post('/register_test', (req, res) => {
   })
 })
 
-//query house action
-app.post('/query_house', (req, res) => {  
-  let area = req.body.area
-  let structure = req.body.structure
-  let price_condition = ""
-  let fire = 0
-  let pet = 0
 
-  if(req.body.price == ""){
+app.get('/query_house', (req, res) => {
+  if(req.query.price == ""){
     price_condition = "price>0"
   }else{
-    price_condition = "price<" + req.body.price
-  }
-
-
-  if(req.body.fire == "on"){
-    fire = 1
-  }
-  if(req.body.pet == "on"){
-    pet = 1
-  }
-
-  connection.query(`SELECT * FROM house_info WHERE address LIKE '%${area}%' AND kind IN(${structure}) AND ${price_condition} AND fire=${fire} AND pet=${pet}`, (err, result) => {
-    if (err) console.log('fail to insert:', err)
-    let num_of_data = `找到${result.length}間房`
-    res.render('search', {'data':result, 'area':area, 'num_of_data':num_of_data})
+    price_condition = "price<" + req.query.price
+  }  
+  connection.query(`SELECT * FROM house_info WHERE address LIKE '%${req.query.area}%' AND kind IN(${req.query.structure}) AND ${price_condition} AND fire=${req.query.fire} AND pet=${req.query.pet}`, (err, result) => {
+    if (err) console.log('fail to select:', err)
+    res.send(result)
   }) 
 })
 
 //check house detail action
 app.post('/query_house/house_detail_page', (req, res) => {
+  let user_info
+  connection.query(`SELECT username, user_num FROM user_info WHERE user_num=${req.session.userID}`, (err, result) =>{
+    if (err) console.log('fail to select:', err)
+    user_info = result[0]
+  })  
   connection.query(`SELECT * FROM house_info, user_info WHERE house_info.house_num=${req.body.house_num} AND house_info.user_num=user_info.user_num`, (err, result) => {
     if (err) console.log('fail to insert:', err)
     if (result.length == 1){
       result[0].fire = result[0].fire==1 ? '可以' : '不可以'
       result[0].pet = result[0].pet==1 ? '可以' : '不可以'
       result[0].phone = result[0].phone.toString().replace(/(\d{3})(\d{3})(\d{3})/, '0$1-$2-$3')
-      console.log(result)
-      res.render('house-detail', {'data':result[0]})
+      res.render('house-detail', {'data':result[0], 'user_info':user_info})
     }else{
       console.log('search nothing!')
     }

@@ -5,7 +5,7 @@ CREATE TABLE user_info
     phone integer,
     email varchar(100), 
     PRIMARY KEY(user_num)
-);
+)ENGINE INNODB;
 CREATE TABLE house_info
 (
     house_num integer AUTO_INCREMENT,
@@ -24,4 +24,4 @@ CREATE TABLE house_info
     lng float,
     PRIMARY KEY(house_num), 
     FOREIGN KEY (user_num) REFERENCES user_info (user_num) ON DELETE CASCADE ON UPDATE CASCADE
-);
+)ENGINE INNODB;

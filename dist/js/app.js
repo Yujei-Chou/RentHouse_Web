@@ -64,17 +64,22 @@ function check() {
 }
 
 
+
 let fireCheck=0;
 let petCheck=0;
 var lat;
 var lng;
 
-$("#fire").click(function(){
+
+$('#fire').click(function(){
     fireCheck = 1; 
 });
-$("#pet").click(function(){
+
+$('#pet').click(function(){
     petCheck = 1;
 });
+
+
 $('#data_submit').click((event) => {
     event.preventDefault()
     var pattern=5;
