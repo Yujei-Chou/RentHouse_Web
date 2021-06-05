@@ -64,14 +64,19 @@ function check() {
 }
 
 
-let fireCheck=0;
-let petCheck=0;
-$("#fire").click(function(){
-    fireCheck = 1; 
+//let fireCheck=0;
+//let petCheck=0;
+/*
+$('#fire').click(function(){
+    $('#fire').val('on')
+    //fireCheck = 1; 
 });
-$("#pet").click(function(){
-    petCheck = 1;
+$('#pet').click(function(){
+    $('#pet').val('off')
+    //petCheck = 1;
 });
+*/
+
 $('#data_submit').click((event) => {
     event.preventDefault()
     var pattern=5;
