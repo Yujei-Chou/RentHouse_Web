@@ -56,3 +56,9 @@ div .hidden{
 #house_details{
     font-size: medium;
 }
+#lat{
+    visibility: hidden;
+}
+#lng{
+    visibility: hidden;
+}

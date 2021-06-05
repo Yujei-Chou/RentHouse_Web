@@ -4,7 +4,7 @@ const config = require('./config/db.js')
 const mysql = require('mysql')
 const session = require('express-session')
 const SESS_NAME = 'ssh! this is a secret string'
-
+const fs = require('fs')
 // create an express(aka web server), and start the server
 const app = express()
 const port = 8217
@@ -186,20 +186,36 @@ app.post('/logout', (req, res) => {
 })
 
 //upload house action
-app.get('/upload_house', (req, res) => {  
-  console.log(req.query.region)
-  console.log(req.query.house_type)
-  console.log(req.query.address)
-  console.log(req.query.type)
-  console.log(req.query.price)
-  console.log(req.query.fire)
-  console.log(req.query.pet)
-  console.log(req.query.house_info)
-  console.log(req.session.userID)
-
-  connection.query(`INSERT INTO house_info(address,structures,price,kind,fire,pet,house_info,user_num,picture1,picture2,region) VALUES ('${req.query.address}','${req.query.type}',${req.query.price},${req.query.house_type},${req.query.fire},${req.query.pet},'${req.query.house_info}',${req.session.userID},'${req.query.picture1}','${req.query.picture2}','${req.query.region}')`, (err, result) => {
-    if (err) console.log('fail to insert:', err)
+app.post('/upload_house', (req, res) => {  
+  /*console.log(req.body.region)
+  console.log(req.body.house_type)
+  console.log(req.body.address)
+  console.log(req.body.type)
+  console.log(req.body.price)
+  console.log(req.body.fire)
+  console.log(req.body.pet)
+  console.log(req.body.house_info)
+  console.log(req.session.userID)*/
+  //console.log(req.body.picture1)
+  //console.log(req.body.picture2)
+  console.log(req.body.lat)
+  console.log(req.body.lng)
+  connection.query(`SELECT MAX(house_num) FROM house_info`, (err, result) =>{
+    if(err) console.log('fail to select:', err)
+    connection.query(`ALTER table house_info AUTO_INCREMENT=${result[0]['MAX(house_num)']}`,(err, result) => {
+      if(err) console.log('fail to alter table:', err)
+    })    
+    let picName1 = `${result[0]['MAX(house_num)']+1+"-1"}.png`
+    let picName2 = `${result[0]['MAX(house_num)']+1+"-2"}.png`
+    fs.writeFile(`./dist/img/housePic/${picName1}`, req.body.picture1.split('base64,')[1], 'base64', function(err) {
+      console.log(err)
+    })
+    fs.writeFile(`./dist/img/housePic/${picName2}`, req.body.picture2.split('base64,')[1], 'base64', function(err) {
+      console.log(err)
+    })
+    connection.query(`INSERT INTO house_info(address,structures,price,kind,fire,pet,house_info,user_num,picture1,picture2,region,lat,lng) VALUES ('${req.body.address}','${req.body.type}',${req.body.price},${req.body.house_type},${req.body.fire},${req.body.pet},'${req.body.house_info}',${req.session.userID},'img/housePic/${picName1}','img/housePic/${picName2}','${req.body.region}','${req.body.lat}','${req.body.lng}')`, (err, result) => {
+      if (err) console.log('fail to insert:', err)
+    })
   })
-
   res.send('upload')
 })

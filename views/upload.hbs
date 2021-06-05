@@ -44,13 +44,20 @@
                             <h3 >上傳照片</h3>
                             <br>
                             <div id="uplaod-wrap">
-
-                                <iframe src="http://luffy.ee.ncku.edu.tw/~jamie/imgur/test.html" width="200px" height="300px" id="son"></iframe>
-                                <br>
-                                <br>
-
+                            <label>圖片1:</label>   
+                                <input id="upload" type="file" accept="image/*" onchange="loadFile(event)" >
+                                <img id="output" width="100%" />
                             </div>
-                            
+                            <div id="uplaod-wrap2">
+                                <label>圖片2:</label>   
+                                <input id="upload2" type="file" accept="image/*" onchange="loadFile2(event)">
+                                <img id="output2" width="100%" />
+
+                                <br>
+                                <button type="button" onclick="clearPage()">清空圖片</button>      
+                            </div>
+                            <div id="picURL" url=""></div>
+                            <div id="picURL2" url=""></div>
                         </div>
                     </div>
                    
@@ -101,8 +108,8 @@
                         <div class="地址">
                             <i class="map pin icon"></i>
                             <label >地址：</label >
-                            <input style="width: 64%; "type="text" name="address" placeholder="台南">
-                            <button class="ui button" style="width: 10%;padding: 5px;background-color:lightgrey;" type="submit">檢查</button>
+                            <input id="address" style="width: 64%; "type="text" name="address" placeholder="台南">
+                            <button class="ui button" style="width: 10%;padding: 5px;background-color:lightgrey;" type="submit" onclick="codeAddress()">檢查</button>
                             
                         </div>
                         <br>
@@ -156,16 +163,28 @@
         </div>
 
         <script>
-            var loadFile = function(event) {
-                var image = document.getElementById('output');
-                image.src = URL.createObjectURL(event.target.files[0]);
-            };
+        var loadFile = function(event) {
+            var image = document.getElementById('output');
+            image.src = URL.createObjectURL(event.target.files[0]);
+        };
+        var loadFile2 = function(event) {
+            var image2 = document.getElementById('output2');
+            image2.src = URL.createObjectURL(event.target.files[0]);
+        };
+        function clearPage(){
+           var Img = document.getElementById("output");
+           
+           Img.src = "";
+          var Img2 = document.getElementById("output2");
+          Img2.src = "";
+        };
         </script>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>    
         <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
+         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrH6PFm6YsUakE6OxkTi3ekc_bp827osQ&amp;libraries=geometry&amp;callback=initMap&amp;language=zh-TW" async="" defer=""></script>
         <script src="./js/app.js"></script>
         
         
