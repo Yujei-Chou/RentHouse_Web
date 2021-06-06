@@ -8,6 +8,12 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/index.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>    
+    <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrH6PFm6YsUakE6OxkTi3ekc_bp827osQ&amp;libraries=geometry&amp;callback=initMap&amp;language=zh-TW" async="" defer=""></script>
+    <script src="./js/app.js"></script>    
     
     </head>
     <body>
@@ -121,7 +127,7 @@
                         <br>
                         <div class="inline field">
                             <label ><i class="dollar sign icon"></i>價格：</label>
-                            <input style="width: 75%;"type="number" name="price" placeholder="$元/月">
+                            <input style="width: 75%;"type="number" name="price" placeholder="$元/月" value="{{data.price}}">
                             
                         </div>
                         <br>
@@ -161,8 +167,10 @@
             
         </div>
         </div>
+    
+    </body>
 
-        <script>
+    <script>
         var loadFile = function(event) {
             var image = document.getElementById('output');
             image.src = URL.createObjectURL(event.target.files[0]);
@@ -172,22 +180,14 @@
             image2.src = URL.createObjectURL(event.target.files[0]);
         };
         function clearPage(){
-           var Img = document.getElementById("output");
-           
-           Img.src = "";
-          var Img2 = document.getElementById("output2");
-          Img2.src = "";
+        var Img = document.getElementById("output");
+        
+        Img.src = "";
+        var Img2 = document.getElementById("output2");
+        Img2.src = "";
         };
-        </script>
-
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>    
-        <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
-         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrH6PFm6YsUakE6OxkTi3ekc_bp827osQ&amp;libraries=geometry&amp;callback=initMap&amp;language=zh-TW" async="" defer=""></script>
-        <script src="./js/app.js"></script>
-        
-        
-        
-    </body>
+        $(document).ready(function(){
+            console.log('dsdlsj')
+        })
+    </script>    
 </html>

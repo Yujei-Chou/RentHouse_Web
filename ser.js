@@ -108,6 +108,28 @@ connection.connect(err => {
 })
 
 
+//get profile action
+app.post('/get_profile', (req, res) => {
+  connection.query(`SELECT * FROM user_info, house_info WHERE user_info.user_num=house_info.user_num AND user_info.user_num=${req.body.user_num}`, (err, result) => {
+    if (err) console.log('fail to select:', err)
+    res.render('user_profile', {'data':result})
+  })
+}) 
+
+//delete house action
+app.get('/delete_house', (req, res) => {
+  console.log(`delete:${req.query.house_num}`)
+  res.send()
+})
+
+//edit house action
+app.post('/edit_house', (req, res) => {
+  connection.query(`SELECT * FROM house_info WHERE house_num=${req.body.house_num}`, (err, result) => {
+    if (err) console.log('fail to select:', err)
+    res.render('upload', {'data': result[0]})
+  })
+})
+
 //login action
 app.post('/',CheckAuthenticated ,(req, res) => {
   connection.query(`SELECT * FROM user_info WHERE phone=${req.body.password} AND email='${req.body.email}'`, (err, result) => {
@@ -187,7 +209,8 @@ app.post('/logout', (req, res) => {
 
 //upload house action
 app.post('/upload_house', (req, res) => {  
-  /*console.log(req.body.region)
+/*
+  console.log(req.body.region)
   console.log(req.body.house_type)
   console.log(req.body.address)
   console.log(req.body.type)
@@ -195,11 +218,12 @@ app.post('/upload_house', (req, res) => {
   console.log(req.body.fire)
   console.log(req.body.pet)
   console.log(req.body.house_info)
-  console.log(req.session.userID)*/
-  //console.log(req.body.picture1)
-  //console.log(req.body.picture2)
+  console.log(req.session.userID)
+  console.log(req.body.picture1)
+  console.log(req.body.picture2)
   console.log(req.body.lat)
   console.log(req.body.lng)
+*/
   connection.query(`SELECT MAX(house_num) FROM house_info`, (err, result) =>{
     if(err) console.log('fail to select:', err)
     connection.query(`ALTER table house_info AUTO_INCREMENT=${result[0]['MAX(house_num)']}`,(err, result) => {

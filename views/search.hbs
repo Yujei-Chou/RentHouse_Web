@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1" name="viewpoint">
-    <title>租房</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/index.css">
+    <head>
+        <meta charset="utf-8">
+        <meta content="width=device-width, initial-scale=1" name="viewpoint">
+        <title>租房</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/index.css">
+        <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>   
     
     </head>
     <body>
@@ -17,12 +20,14 @@
                 <a class="item" id="header" href="/">首頁</a>
                 <a class="item" id="header" href="/search">租房</a>
                 <a class="item" id="header" href="/upload">出租</a>
-                <a class="item" id="header" id="user">{{user_info.username}}</a>
                 <div class="right item">
                     <div class="ui stackable list">
                         <div class="item">
                             <div class="right floated content">
-                                {{!-- <button class="ui inverted basic white button" style="margin-left: 20px;" type="submit">{{user_info.username}}</button> --}}
+                                <form method="POST" action="/get_profile">
+                                    <input type="hidden" name="user_num" value="{{user_info.user_num}}"/>
+                                    <button class="ui inverted basic white button" style="margin-left: 20px;" type="submit">{{user_info.username}}</button>
+                                </form>     
                                 <form method="POST" action="/logout">
                                     <button class="ui inverted basic white button" style="margin-left: 20px;" type="submit">登出</button>
                                 </form>                               
@@ -108,11 +113,6 @@
         </div>
         
         </div>
-
-        <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
-        
         
     </body>
     <script>
@@ -166,10 +166,7 @@
                     }
                 })
             })
-            $('body').on('click', '#user', function(){
-                $('body').empty()
-            })
             $('#query_btn').trigger('click')
         })
-    </script>
+    </script>       
     </html>
