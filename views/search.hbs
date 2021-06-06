@@ -21,13 +21,15 @@
                 <a class="item" id="header" href="/search">租房</a>
                 <a class="item" id="header" href="/upload">出租</a>
                 <div class="right item">
-                    <div class="ui stackable list">
+                    <div>
                         <div class="item">
                             <div class="right floated content">
                                 <form method="POST" action="/get_profile">
                                     <input type="hidden" name="user_num" value="{{user_info.user_num}}"/>
-                                    <button class="ui inverted basic white button" style="margin-left: 20px;" type="submit">{{user_info.username}}</button>
-                                </form>     
+                                    <button style=" border-radius: 50%; height: 50px; width: 50px; border: none;background-color: #964B00;font-weight: bold; color: white;cursor: pointer;">{{user_info.username}}</button>
+                                </form>
+                            </div>
+                            <div class="right floated content">
                                 <form method="POST" action="/logout">
                                     <button class="ui inverted basic white button" style="margin-left: 20px;" type="submit">登出</button>
                                 </form>                               
@@ -35,7 +37,7 @@
                         </div>   
                     </div>
                 </div>
-        </div>
+            </div>
             <div class="ui two column centered grid">
                 <div class="center aligned four wide column">
                     <br>
@@ -140,7 +142,7 @@
                         $('input[name=pet]').val('0')                                 
                         $('#house_amount').html(`找到${Object.keys(data).length}間房`)
                         $.each(data, function (key, value){
-                            $('#house_div').append(`<form class="column" style="width: 300px;" action="/query_house/house_detail_page" method="POST">
+                            $('#house_div').append(`<form class="column" style="width: 300px;" action="/house_detail_page" method="POST">
                                                         <div class="ui large image">
                                                             <img src="${value.picture1}">
                                                         </div>

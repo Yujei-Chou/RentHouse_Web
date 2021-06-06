@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/index.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>  
     
 </head>
 
@@ -45,12 +48,11 @@
                             <i class="lock icon"></i>
                             <input type="password" name="password" placeholder="Cellphone number" value={{phone}}>
                         </div>
+                        <div id="login-error" class="error">{{err_msg}}</div>
                     </div>
                   <button id="login_submit_btn" class="ui fluid brown submit button" type="submit">登入</button>
                   <div style="text-align: right;  "><a href="#" style="color:brown">忘記密碼?</a></div>
                 </div>
-          
-                <div class="ui error message"></div>
           
               </form>
           
@@ -60,10 +62,7 @@
             </div>
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
-        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
-    <script src="./js/app.js"></script>
+
     
 </body>
 

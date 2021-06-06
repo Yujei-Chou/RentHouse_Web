@@ -20,8 +20,19 @@ app.set('view engine', 'hbs')
 
 // setup `body-parser`
 const bodyParser = require('body-parser')
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}))
+app.use(bodyParser.json({limit: '50mb', extended: true}))
+
+//connect to mysql
+const connection = mysql.createConnection(config.mysql)
+
+connection.connect(err => {
+  if (err) {
+    console.log('fail to connect:', err)
+    process.exit()
+  }
+
+})
 
 //use session
 app.use(session({
@@ -54,7 +65,7 @@ app.get("/", (req, res) => {
   if(req.session.userID){
     connection.query(`SELECT username, user_num FROM user_info WHERE user_num=${req.session.userID}`, (err, result) =>{
       if (err) console.log('fail to select:', err)
-      res.render('index', {'log_status': 'login', 'user_info': result[0]})
+      res.render('index', {'login': 'login', 'user_info': result[0]})
     })  
   }else{
     res.render('index')
@@ -96,37 +107,40 @@ app.get("/user_profile", CheckNotAuthenticated, (req, res) => {
 })
 
 
-//connect to mysql
-const connection = mysql.createConnection(config.mysql)
-
-connection.connect(err => {
-  if (err) {
-    console.log('fail to connect:', err)
-    process.exit()
-  }
-
-})
-
 
 //get profile action
 app.post('/get_profile', (req, res) => {
+  let user_info
+  connection.query(`SELECT * FROM user_info WHERE user_num=${req.body.user_num}`, (err, result) =>{
+    if (err) console.log('fail to select:', err)
+    user_info = result[0]
+  })  
   connection.query(`SELECT * FROM user_info, house_info WHERE user_info.user_num=house_info.user_num AND user_info.user_num=${req.body.user_num}`, (err, result) => {
     if (err) console.log('fail to select:', err)
-    res.render('user_profile', {'data':result})
+    res.render('user_profile', {'data':result, 'user_info':user_info})
   })
 }) 
 
 //delete house action
 app.get('/delete_house', (req, res) => {
   console.log(`delete:${req.query.house_num}`)
-  res.send()
+  connection.query(`DELETE FROM house_info WHERE house_num=${req.query.house_num}`, (err, result) =>{
+    if (err) console.log('fail to delete:', err)
+    res.send()
+  })    
 })
 
 //edit house action
 app.post('/edit_house', (req, res) => {
+  let user_info
+  connection.query(`SELECT username, user_num FROM user_info WHERE user_num=${req.session.userID}`, (err, result) =>{
+    if (err) console.log('fail to select:', err)
+    user_info = result[0]
+  })  
+
   connection.query(`SELECT * FROM house_info WHERE house_num=${req.body.house_num}`, (err, result) => {
     if (err) console.log('fail to select:', err)
-    res.render('upload', {'data': result[0]})
+    res.render('upload', {'data': result[0], 'user_info': user_info})
   })
 })
 
@@ -138,10 +152,10 @@ app.post('/',CheckAuthenticated ,(req, res) => {
       req.session.userID = result[0].user_num
       connection.query(`SELECT username, user_num FROM user_info WHERE user_num=${req.session.userID}`, (err, result) =>{
         if (err) console.log('fail to select:', err)
-        res.render('index', {'log_status': 'login', 'user_info':result[0]})
+        res.render('index', {'login': 'login', 'user_info':result[0]})
       })
     }else{
-      console.log('wrong!')
+      res.render('login', {'err_msg': '帳號密碼錯誤'})
     }
   })
   
@@ -176,7 +190,7 @@ app.get('/query_house', (req, res) => {
 })
 
 //check house detail action
-app.post('/query_house/house_detail_page', (req, res) => {
+app.post('/house_detail_page', (req, res) => {
   let user_info
   connection.query(`SELECT username, user_num FROM user_info WHERE user_num=${req.session.userID}`, (err, result) =>{
     if (err) console.log('fail to select:', err)
@@ -207,39 +221,46 @@ app.post('/logout', (req, res) => {
   })
 })
 
+
 //upload house action
-app.post('/upload_house', (req, res) => {  
-/*
-  console.log(req.body.region)
-  console.log(req.body.house_type)
-  console.log(req.body.address)
-  console.log(req.body.type)
-  console.log(req.body.price)
-  console.log(req.body.fire)
-  console.log(req.body.pet)
-  console.log(req.body.house_info)
-  console.log(req.session.userID)
-  console.log(req.body.picture1)
-  console.log(req.body.picture2)
-  console.log(req.body.lat)
-  console.log(req.body.lng)
-*/
-  connection.query(`SELECT MAX(house_num) FROM house_info`, (err, result) =>{
-    if(err) console.log('fail to select:', err)
-    connection.query(`ALTER table house_info AUTO_INCREMENT=${result[0]['MAX(house_num)']}`,(err, result) => {
-      if(err) console.log('fail to alter table:', err)
-    })    
-    let picName1 = `${result[0]['MAX(house_num)']+1+"-1"}.png`
-    let picName2 = `${result[0]['MAX(house_num)']+1+"-2"}.png`
-    fs.writeFile(`./dist/img/housePic/${picName1}`, req.body.picture1.split('base64,')[1], 'base64', function(err) {
-      console.log(err)
+app.post('/upload_house', (req, res) => {
+  
+  if(req.body.house_num){
+    if(req.body.cond == 'unchange')
+    {
+      connection.query(`UPDATE house_info SET address='${req.body.address}', structures='${req.body.type}', price=${req.body.price}, kind=${req.body.house_type}, fire=${req.body.fire}, pet=${req.body.pet}, house_info='${req.body.house_info}', user_num=${req.session.userID}, region='${req.body.region}', lat=${req.body.lat}, lng=${req.body.lng} WHERE house_num=${req.body.house_num}`, (err, result) => {
+        if (err) console.log('fail to update:', err)
+      })
+    }else{
+      connection.query(`UPDATE house_info SET address='${req.body.address}', structures='${req.body.type}', price=${req.body.price}, kind=${req.body.house_type}, fire=${req.body.fire}, pet=${req.body.pet}, house_info='${req.body.house_info}', user_num=${req.session.userID},picture1='img/housePic/${req.body.house_num}-1.png', picture2='img/housePic/${req.body.house_num}-2.png', region='${req.body.region}', lat=${req.body.lat}, lng=${req.body.lng} WHERE house_num=${req.body.house_num}`, (err, result) => {
+        if (err) console.log('fail to update:', err)
+        fs.writeFile(`./dist/img/housePic/${req.body.house_num}-1.png`, req.body.picture1.split('base64,')[1], 'base64', function(err) {
+          console.log(err)
+        })
+        fs.writeFile(`./dist/img/housePic/${req.body.house_num}-2.png`, req.body.picture2.split('base64,')[1], 'base64', function(err) {
+          console.log(err)
+        })  
+      })
+    }
+    res.send()   
+  }else{
+    connection.query(`SELECT MAX(house_num) FROM house_info`, (err, result) =>{
+      if(err) console.log('fail to select:', err)
+      connection.query(`ALTER table house_info AUTO_INCREMENT=${result[0]['MAX(house_num)']}`,(err, result) => {
+        if(err) console.log('fail to alter table:', err)
+      })    
+      let picName1 = `${result[0]['MAX(house_num)']+1+"-1"}.png`
+      let picName2 = `${result[0]['MAX(house_num)']+1+"-2"}.png`
+      fs.writeFile(`./dist/img/housePic/${picName1}`, req.body.picture1.split('base64,')[1], 'base64', function(err) {
+        console.log(err)
+      })
+      fs.writeFile(`./dist/img/housePic/${picName2}`, req.body.picture2.split('base64,')[1], 'base64', function(err) {
+        console.log(err)
+      })
+      connection.query(`INSERT INTO house_info(address,structures,price,kind,fire,pet,house_info,user_num,picture1,picture2,region,lat,lng) VALUES ('${req.body.address}','${req.body.type}',${req.body.price},${req.body.house_type},${req.body.fire},${req.body.pet},'${req.body.house_info}',${req.session.userID},'img/housePic/${picName1}','img/housePic/${picName2}','${req.body.region}','${req.body.lat}','${req.body.lng}')`, (err, result) => {
+        if (err) console.log('fail to insert:', err)
+      })
     })
-    fs.writeFile(`./dist/img/housePic/${picName2}`, req.body.picture2.split('base64,')[1], 'base64', function(err) {
-      console.log(err)
-    })
-    connection.query(`INSERT INTO house_info(address,structures,price,kind,fire,pet,house_info,user_num,picture1,picture2,region,lat,lng) VALUES ('${req.body.address}','${req.body.type}',${req.body.price},${req.body.house_type},${req.body.fire},${req.body.pet},'${req.body.house_info}',${req.session.userID},'img/housePic/${picName1}','img/housePic/${picName2}','${req.body.region}','${req.body.lat}','${req.body.lng}')`, (err, result) => {
-      if (err) console.log('fail to insert:', err)
-    })
-  })
-  res.send('upload')
+    res.send()    
+  }
 })

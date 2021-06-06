@@ -13,7 +13,7 @@ function clear() {
   $('#password').removeClass('err');
   $('#password2').removeClass('err');
   $('#gender').removeClass('err');
-$('#role').removeClass('err');
+  $('#role').removeClass('err');
 
 }
 
@@ -65,145 +65,104 @@ function check() {
 
 
 
-let fireCheck=0;
-let petCheck=0;
-var lat;
-var lng;
 
 
-$('#fire').click(function(){
-    fireCheck = 1; 
-});
 
-$('#pet').click(function(){
-    petCheck = 1;
-});
-
-
-$('#data_submit').click((event) => {
-    event.preventDefault()
-    var pattern=5;
-    // var img1 = document.getElementById('son').contentWindow.document.getElementById('T1').value;
-    // var img2 = document.getElementById('son').contentWindow.document.getElementById('T3').value;
-    // console.log(img1)
-    // console.log(img2)
-    if($('#house_type').val()=="0")
-    {
-        pattern=0;
-    }
-    else if($('#house_type').val()=="1")
-    {
-        pattern=1;
-    }
-    else if($('#house_type').val()=="2,3,4")
-    {
-        var str=$('input[name=type]').val();
-        var str1=str.indexOf('衛');
-        var str2=str.indexOf('套');
-        var str3=str.indexOf('雅');
-        if( (str1!=-1 || str2!=-1) && str3!=-1)
-        {
-            pattern=2;
-        }
-        else if(str3!=-1)
-        {
-            pattern=3;
-        }
-        else{
-            pattern=4;
-        }
+function readURL(input){
+    if(input.files && input.files[0]){  
+        var reader = new FileReader();
         
-    }
-
-    $.ajax({
-        type: "POST",
-        url: "upload_house",
-        data:{
-        house_type: pattern,
-        region: $('#region').val(),
-        address: $('input[name=address]').val(),
-        type: $('input[name=type]').val(),
-        price:$('input[name=price]').val(),
-        fire:fireCheck,
-        pet:petCheck,
-        house_info:$('#house_info').val(),
-        picture1:$('#picURL').attr('url'),
-        picture2:$('#picURL2').attr('url'),
-        lat:lat,
-        lng:lng
-        },
-        success: function (data){  
-        console.log(data)
-        alert('上傳成功')
-        }
-      })
-
-})
-
-$("#clear_btn").click(function(){
-      
-  $("#region").val(0);
-  $("#house_type").val("不限");
-  $('input[name=address]').val(""); 
-  $('input[name=type]').val("");
-  $('input[name=price]').val("");
-  $('#house_info').val(""),
-  $("#fire").attr("checked", false);
-  $("#pet").attr("checked", false);
-
-});
-
-$('body').on('change', '#upload', function(){
-    readURL(this)
-  })
-$('body').on('change', '#upload2', function(){
-    readURL2(this)
-  })
-
-  function readURL(input){
-	if(input.files && input.files[0]){
-
-			
-		var reader = new FileReader();
-		
-		reader.onload = function (e) {
+        reader.onload = function (e) {
             $("#picURL").attr('url', e.target.result);
-		}
-		reader.readAsDataURL(input.files[0]);
-	}
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
 }
-  function readURL2(input){
-	if(input.files && input.files[0]){
-
-			
-		var reader = new FileReader();
-		
-		reader.onload = function (e) {
+function readURL2(input){
+    if(input.files && input.files[0]){   
+        var reader = new FileReader();
+        
+        reader.onload = function (e) {
             $("#picURL2").attr('url', e.target.result);
-		}
-		reader.readAsDataURL(input.files[0]);
-	}
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
 }
 
-var geocoder;
 
 function initMap() {
     geocoder = new google.maps.Geocoder();
+    return geocoder
 }
-    
-function codeAddress() {
-    var address = document.getElementById("address").value;
-    geocoder.geocode({
-        'address': address
+
+function upload() {
+    initMap().geocode({
+        'address': $('input[name=address]').val()
     }, function(results, status) {
-        if (status == google.maps.GeocoderStatus.OK) {
-            // 緯度：results[0].geometry.location.lat()
-            // 經度：results[0].geometry.location.lng()
-            lat=results[0].geometry.location.lat();
-            lng=results[0].geometry.location.lng();
-            alert("lat=" + results[0].geometry.location.lat() + ",lng=" + results[0].geometry.location.lng());
+        if (status == google.maps.GeocoderStatus.OK) {            
+            let pattern=5
+            if($('#house_type').val()=='0')
+            {
+                pattern=0
+            }
+            else if($('#house_type').val()=='1')
+            {
+                pattern=1
+            }
+            else if($('#house_type').val()=='2,3,4')
+            {
+                var str=$('input[name=type]').val()
+                var str1=str.indexOf('衛')
+                var str2=str.indexOf('套')
+                var str3=str.indexOf('雅')
+                if( (str1!=-1 || str2!=-1) && str3!=-1)
+                {
+                    pattern=2
+                }
+                else if(str3!=-1)
+                {
+                    pattern=3
+                }
+                else{
+                    pattern=4
+                }
+                
+            }
+
+            if($('input[name=fire]').prop( "checked" )){
+                $('input[name=fire]').val('1')
+            }
+
+            if($('input[name=pet]').prop( "checked" )){
+                $('input[name=pet]').val('1')
+            }                
+            $.ajax({
+                type: "POST",
+                url: "upload_house",
+                data:{
+                    house_type: pattern,
+                    region: $('#region').val(),
+                    address: $('input[name=address]').val(),
+                    type: $('input[name=type]').val(),
+                    price:$('input[name=price]').val(),
+                    fire:$('input[name=fire]').val(),
+                    pet:$('input[name=pet]').val(),
+                    house_num:$('input[name=house_num]').val(),                        
+                    house_info:$('#house_info').html(),
+                    picture1:$('#picURL').attr('url'),
+                    picture2:$('#picURL2').attr('url'),
+                    cond:$('#clearPic_btn').attr('cond'),
+                    lat:results[0].geometry.location.lat(),
+                    lng:results[0].geometry.location.lng()
+                },
+                success: function (data){  
+                    alert('上傳成功')
+                    $('#clear_btn').trigger('click')
+                    clearPage()
+                }
+            })
         } else {
-            alert("Geocode was not successful for the following reason: " + status);
+            alert('錯誤地址')
         }
     });
 }

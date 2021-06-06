@@ -9,28 +9,40 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" rel="stylesheet" type="text/css">
     <link href="../css/index.css" rel="stylesheet" >
     <link href="../css/style.css" rel="stylesheet" >
-    
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrH6PFm6YsUakE6OxkTi3ekc_bp827osQ&callback=initMap">
+    </script>
+    <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
+    <script async defersrc="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrH6PFm6YsUakE6OxkTi3ekc_bp827osQ&callback=initMap"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>  
     </head>
     <body>
         <div id="landing" >
             <div class="ui stackable secondary menu" id="menu" style="background-image: url('../img/background.png');background-size: cover !important;height: 120px;">
-                <div class="item"><i class="building primary huge icon" ></i></div>
-                <a class="item" id="header" href="/">首頁</a>
-                <a class="item" id="header" href="/search">租房</a>
-                <a class="item" id="header" href="/upload">出租</a>
-                <a class="item" id="header" href="#">{{user_info.username}}</a>
-                <div class="right item">
-                    <div class="ui stackable list">
-                        <div class="item">
-                            <div class="right floated content">
-                                <form method="POST" action="/logout">
-                                    <button class="ui inverted basic white button" style="margin-left: 20px;" type="submit">登出</button>
-                                </form>                               
-                            </div>
-                        </div>   
-                    </div>
-                </div>
-        </div>
+              <div class="item"><i class="building primary huge icon" ></i></div>
+              <a class="item" id="header" href="/">首頁</a>
+              <a class="item" id="header" href="/search">租房</a>
+              <a class="item" id="header" href="/upload">出租</a>
+              <div class="right item">
+                  <div>
+                      <div class="item">
+                          <div class="right floated content">
+                              <form method="POST" action="/get_profile">
+                                  <input type="hidden" name="user_num" value="{{user_info.user_num}}"/>
+                                  <button style=" border-radius: 50%; height: 50px; width: 50px; border: none;background-color: #964B00;font-weight: bold; color: white;cursor: pointer;">{{user_info.username}}</button>
+                              </form>
+                          </div>
+                          <div class="right floated content">
+                              <form method="POST" action="/logout">
+                                  <button class="ui inverted basic white button" style="margin-left: 20px; height: 50px;" type="submit">登出</button>
+                              </form>                               
+                          </div>
+                      </div>   
+                  </div>
+              </div>
+            </div>
             <div class="ui two column centered stackable grid">
                 <div class="center aligned eight wide column" id="images">
                     <br>
@@ -84,61 +96,49 @@
                 </div>
             
         
+            </div>    
         </div>
-        
-        </div>
-        <script>
-           
-        
-          
-          //console.log(!{JSON.stringify(data)})
-          // Initialize and add the map
-          function initMap() {
-              var lat=(parseFloat(document.getElementById('lat').innerHTML))
-              var lng=(parseFloat(document.getElementById('lng').innerHTML))
-              console.log(lat)
-              // The location of Uluru
-              var ncku = {lat:lat  , lng:lng};
-              var map = new google.maps.Map(
-                  document.getElementById('map'), {zoom: 18, center: ncku});
-              // The marker, positioned at Uluru
-              var marker1 = new google.maps.Marker({position: ncku, map: map});
-
-             
-              var map = document.getElementById('map')
-              var address = document.getElementById('address').innerHTML;
-              //var address = "台南市東區新樓街41號5樓";
-              console.log(address)
-              geocoder = new google.maps.Geocoder();
-              codeAddress(geocoder, map);
-
-              function codeAddress(geocoder, map) {
-                geocoder.geocode({'address': address}, function(results, status) {
-                  if (status === 'OK') {
-                    var marker = new google.maps.Marker({
-                      map: map,
-                      position: results[0].geometry.location
-                    });
-                  } else {
-                    alert('Geocode was not successful for the following reason: ' + status);
-                  }
-                  console.log(results[0].geometry.location)
-                });
-              }
-          }
-          
-        </script>
-
-        <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrH6PFm6YsUakE6OxkTi3ekc_bp827osQ&callback=initMap">
-        </script>
-        <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
-        <script async defersrc="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrH6PFm6YsUakE6OxkTi3ekc_bp827osQ&callback=initMap"></script>
-                <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
-        <script src="./js/app.js"></script>
-        
         
     </body>
-    </html>
+    <script>
+        
+    
+      
+
+      // Initialize and add the map
+      function initMap() {
+          var lat=(parseFloat(document.getElementById('lat').innerHTML))
+          var lng=(parseFloat(document.getElementById('lng').innerHTML))
+          console.log(lat)
+          // The location of Uluru
+          var ncku = {lat:lat  , lng:lng};
+          var map = new google.maps.Map(
+              document.getElementById('map'), {zoom: 18, center: ncku});
+          // The marker, positioned at Uluru
+          var marker1 = new google.maps.Marker({position: ncku, map: map});
+
+          
+          var map = document.getElementById('map')
+          var address = document.getElementById('address').innerHTML;
+          //var address = "台南市東區新樓街41號5樓";
+          console.log(address)
+          geocoder = new google.maps.Geocoder();
+          codeAddress(geocoder, map);
+
+          function codeAddress(geocoder, map) {
+            geocoder.geocode({'address': address}, function(results, status) {
+              if (status === 'OK') {
+                var marker = new google.maps.Marker({
+                  map: map,
+                  position: results[0].geometry.location
+                });
+              } else {
+                alert('Geocode was not successful for the following reason: ' + status);
+              }
+              console.log(results[0].geometry.location)
+            });
+          }
+      }
+      
+    </script>    
+  </html>

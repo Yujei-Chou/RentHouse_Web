@@ -13,7 +13,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrH6PFm6YsUakE6OxkTi3ekc_bp827osQ&amp;libraries=geometry&amp;callback=initMap&amp;language=zh-TW" async="" defer=""></script>
-    <script src="./js/app.js"></script>    
+    <script src="js/app.js"></script>    
     
     </head>
     <body>
@@ -23,10 +23,16 @@
                 <a class="item" id="header" href="/">首頁</a>
                 <a class="item" id="header" href="/search">租房</a>
                 <a class="item" id="header" href="/upload">出租</a>
-                <a class="item" id="header" href="#">{{user_info.username}}</a>
                 <div class="right item">
-                    <div class="ui stackable list">
+                    <div>
                         <div class="item">
+                            <div class="right floated content">
+                                <form method="POST" action="/get_profile">
+                                    <input type="hidden" name="house_num" value="{{data.house_num}}"/>
+                                    <input type="hidden" name="user_num" value="{{user_info.user_num}}"/>
+                                    <button style=" border-radius: 50%; height: 50px; width: 50px; border: none;background-color: #964B00;font-weight: bold; color: white;cursor: pointer;">{{user_info.username}}</button>
+                                </form>
+                            </div>
                             <div class="right floated content">
                                 <form method="POST" action="/logout">
                                     <button class="ui inverted basic white button" style="margin-left: 20px;" type="submit">登出</button>
@@ -35,37 +41,37 @@
                         </div>   
                     </div>
                 </div>
-        </div>
+            </div>
         
             <div class="ui two column centered grid">
                 
                 <div class="left aligned four wide column">
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <div class="inline field" >
+                        
+                        <h3 >上傳照片</h3>
                         <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <div class="inline field" >
-                            
-                            <h3 >上傳照片</h3>
-                            <br>
-                            <div id="uplaod-wrap">
-                            <label>圖片1:</label>   
-                                <input id="upload" type="file" accept="image/*" onchange="loadFile(event)" >
-                                <img id="output" width="100%" />
-                            </div>
-                            <div id="uplaod-wrap2">
-                                <label>圖片2:</label>   
-                                <input id="upload2" type="file" accept="image/*" onchange="loadFile2(event)">
-                                <img id="output2" width="100%" />
-
-                                <br>
-                                <button type="button" onclick="clearPage()">清空圖片</button>      
-                            </div>
-                            <div id="picURL" url=""></div>
-                            <div id="picURL2" url=""></div>
+                        <div id="uplaod-wrap">
+                        <label>圖片1:</label>   
+                            <input id="upload" type="file" accept="image/*" onchange="loadFile(event)" >
+                            <img id="output" width="100%" src="{{data.picture1}}"/>
                         </div>
+                        <div id="uplaod-wrap2">
+                            <label>圖片2:</label>   
+                            <input id="upload2" type="file" accept="image/*" onchange="loadFile2(event)">
+                            <img id="output2" width="100%" src="{{data.picture2}}"/>
+
+                            <br>
+                            <button type="button" id="clearPic_btn" onclick="clearPage()" cond="unchange">清空圖片</button>      
+                        </div>
+                        <div id="picURL" url=""></div>
+                        <div id="picURL2" url=""></div>
                     </div>
+                </div>
                    
                 <div class="left aligned eight wide column">
                     <br>
@@ -82,7 +88,7 @@
                             出租資訊
                             </div>
                             </h2>
-                                        
+                    </div>                    
                     <div class= "ui list" >
                         <div class="inline field">
                             <label >地區</label>
@@ -103,7 +109,7 @@
                         <br>
                         <div class="inline field">
                             <label >類型</label>
-                            <select class="ui dropdown" id="house_type" style="width: 80%;">
+                            <select class="ui dropdown" id="house_type" style="width: 80%;" kind="{{data.kind}}">
                                 <option value="0,1,2,3,4">不限</option>
                                 <option value="0">雅房</option>
                                 <option value="1">套房</option>
@@ -114,14 +120,13 @@
                         <div class="地址">
                             <i class="map pin icon"></i>
                             <label >地址：</label >
-                            <input id="address" style="width: 64%; "type="text" name="address" placeholder="台南">
-                            <button class="ui button" style="width: 10%;padding: 5px;background-color:lightgrey;" type="submit" onclick="codeAddress()">檢查</button>
+                            <input id="address" style="width: 64%; "type="text" name="address" placeholder="台南" value="{{data.address}}">
                             
                         </div>
                         <br>
                         <div class="inline field">
                             <label ><i class="bed icon"></i>格局：</label>
-                            <input style="width: 75%;"type="text" name="type" placeholder="機房" >
+                            <input style="width: 75%;"type="text" name="type" placeholder="幾房 幾廳 幾衛浴" value="{{data.structures}}">
                             
                         </div>
                         <br>
@@ -133,9 +138,9 @@
                         <br>
                         <div class="inline field">
                             <div >
-                                <input type="checkbox" name="fire" id="fire">
+                                <input type="checkbox" name="fire" id="fire" fire="{{data.fire}}" value="0">
                                 <label  style="padding-right: 10%;"><i class="fire icon"></i> 開火</label>
-                                <input type="checkbox" name="pet" id="pet">
+                                <input type="checkbox" name="pet" id="pet" pet="{{data.pet}}" value="0">
                                 <label><i class="paw icon"></i> 寵物</label>
                             </div>
 
@@ -146,48 +151,89 @@
                         </div>
                         <br>
                             
-                            <div class="inline field">
-                                <label >描述 : </label>
-                                <textarea style="width: 80%;height:150px;"type="text" name="house_info" placeholder="" id="house_info"></textarea>
-                            </div>
-                            <br>
-                            <div class="inline field" id ="submit_btn">
-                            <button class="ui primary button" type="submit" id="data_submit" >Submit</button>
-                            <button type="reset" class="ui button" id="clear_btn">Clear</button>
-                            </div>
+                        <div class="inline field">
+                            <label >描述 : </label>
+                            <textarea style="width: 80%;height:150px;"type="text" name="house_info" placeholder="" id="house_info">{{data.house_info}}</textarea>
+                        </div>
+                        <br>
+                        <div class="inline field" id ="submit_btn">
+                        <button class="ui primary button" type="submit" id="data_submit" >Submit</button>
+                        <button type="reset" class="ui button" id="clear_btn">Clear</button>
+                        </div>
                         
                     </div>
                     
                 </div>
                 
             </div>    
- 
-            
-        
-            
-        </div>
+             
         </div>
     
     </body>
 
-    <script>
-        var loadFile = function(event) {
-            var image = document.getElementById('output');
-            image.src = URL.createObjectURL(event.target.files[0]);
-        };
-        var loadFile2 = function(event) {
-            var image2 = document.getElementById('output2');
-            image2.src = URL.createObjectURL(event.target.files[0]);
-        };
+    <script>    
+        let loadFile = function(event) {
+            $('#output').attr('src', URL.createObjectURL(event.target.files[0]))
+        }
+        let loadFile2 = function(event) {
+            $('#output2').attr('src', URL.createObjectURL(event.target.files[0]))
+        }
         function clearPage(){
-        var Img = document.getElementById("output");
-        
-        Img.src = "";
-        var Img2 = document.getElementById("output2");
-        Img2.src = "";
-        };
-        $(document).ready(function(){
-            console.log('dsdlsj')
+            $('#upload').css('display', 'initial')
+            $('#upload2').css('display', 'initial')            
+            $('#output').attr('src', '')
+            $('#output2').attr('src', '')
+            $('#clearPic_btn').attr('cond', 'change')
+        }
+
+        $(document).ready(function(){      
+            if($('#address').val()){
+                $('#upload').css('display', 'none')
+                $('#upload2').css('display', 'none')
+                $('#region').val('{{data.region}}')
+                $('#picURL').attr('url', '{{data.picture1}}')
+                $('#picURL2').attr('url', '{{data.picture2}}')               
+                if($('#house_type').attr('kind') == 0){
+                    $('#house_type').val('0')    
+                }else if($('#house_type').attr('kind') == 1){
+                    $('#house_type').val('1')
+                }else{
+                    $('#house_type').val('2,3,4')
+                }
+                
+                if($('#fire').attr('fire') == 1){
+                    $('input[name=fire]').prop('checked', true) 
+                }
+
+                if($('#pet').attr('pet') == 1){
+                    $('input[name=pet]').prop('checked', true) 
+                }
+            }
+
+            $('body').on('change', '#upload', function(){
+                readURL(this)
+            })
+            $('body').on('change', '#upload2', function(){
+                readURL2(this)
+            })
+
+            $('body').on('click', '#clear_btn',function(){
+                $('#region').val('台南')
+                $('#house_type').val('0,1,2,3,4')
+                $('input[name=address]').val('') 
+                $('input[name=type]').val('')
+                $('input[name=price]').val('')
+                $('#house_info').val("")
+                $('input[name=fire]').prop('checked', false) 
+                $('input[name=pet]').prop('checked', false) 
+
+            })
+
+            $('body').on('click', '#data_submit', function(){             
+                upload()
+
+            })                      
+
         })
     </script>    
 </html>
