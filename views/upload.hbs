@@ -59,12 +59,13 @@
                         <label>圖片1:</label>   
                             <input id="upload" type="file" accept="image/*" onchange="loadFile(event)" >
                             <img id="output" width="100%" src="{{data.picture1}}"/>
+                            <div id="picURL-error" class="error" ></div>
                         </div>
                         <div id="uplaod-wrap2">
                             <label>圖片2:</label>   
                             <input id="upload2" type="file" accept="image/*" onchange="loadFile2(event)">
                             <img id="output2" width="100%" src="{{data.picture2}}"/>
-
+                            <div id="picURL2-error" class="error" ></div>
                             <br>
                             <button type="button" id="clearPic_btn" onclick="clearPage()" cond="unchange">清空圖片</button>      
                         </div>
@@ -105,35 +106,37 @@
                                 <option value="新化">新化</option>
                                 <option value="左鎮">左鎮</option>
                             </select>
+                            <div id="region-error" class="error" style="margin-left: 30px;"></div>
                         </div>
                         <br>
                         <div class="inline field">
                             <label >類型</label>
                             <select class="ui dropdown" id="house_type" style="width: 80%;" kind="{{data.kind}}">
-                                <option value="0,1,2,3,4">不限</option>
+                                <option value="0,1,2,3,4">類型</option>
                                 <option value="0">雅房</option>
                                 <option value="1">套房</option>
                                 <option value="2,3,4">家庭式</option>
                             </select>
+                            <div id="house_type-error" class="error" style="margin-left: 30px;"></div>
                         </div>
                         <br>
                         <div class="地址">
                             <i class="map pin icon"></i>
                             <label >地址：</label >
                             <input id="address" style="width: 64%; "type="text" name="address" placeholder="台南" value="{{data.address}}">
-                            
+                            <div id="address-error" class="error" style="margin-left: 70px;"></div>
                         </div>
                         <br>
                         <div class="inline field">
                             <label ><i class="bed icon"></i>格局：</label>
-                            <input style="width: 75%;"type="text" name="type" placeholder="幾房 幾廳 幾衛浴" value="{{data.structures}}">
-                            
+                            <input id="type" style="width: 75%;"type="text" name="type" placeholder="幾房 幾廳 幾衛浴" value="{{data.structures}}">
+                            <div id="type-error" class="error" style="margin-left: 70px;"></div>
                         </div>
                         <br>
                         <div class="inline field">
                             <label ><i class="dollar sign icon"></i>價格：</label>
-                            <input style="width: 75%;"type="number" name="price" placeholder="$元/月" value="{{data.price}}">
-                            
+                            <input id="price" style="width: 75%;"type="number" name="price" placeholder="$元/月" value="{{data.price}}">
+                            <div id="price-error" class="error" style="margin-left: 70px;"></div>
                         </div>
                         <br>
                         <div class="inline field">
@@ -154,6 +157,7 @@
                         <div class="inline field">
                             <label >描述 : </label>
                             <textarea style="width: 80%;height:150px;"type="text" name="house_info" placeholder="" id="house_info">{{data.house_info}}</textarea>
+                            <div id="house_info-error" class="error" style="margin-left: 40px;"></div>
                         </div>
                         <br>
                         <div class="inline field" id ="submit_btn">
@@ -184,6 +188,8 @@
             $('#output').attr('src', '')
             $('#output2').attr('src', '')
             $('#clearPic_btn').attr('cond', 'change')
+            $("#picURL").attr('url', "");
+            $("#picURL2").attr('url', "");
         }
 
         $(document).ready(function(){      
