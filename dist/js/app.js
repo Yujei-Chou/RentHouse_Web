@@ -213,7 +213,7 @@ function upload() {
                         fire:$('input[name=fire]').val(),
                         pet:$('input[name=pet]').val(),
                         house_num:$('input[name=house_num]').val(),                        
-                        house_info:$('#house_info').html(),
+                        house_info:$('#house_info').val(),
                         picture1:$('#picURL').attr('url'),
                         picture2:$('#picURL2').attr('url'),
                         cond:$('#clearPic_btn').attr('cond'),
@@ -229,6 +229,6 @@ function upload() {
             } else {
                 alert('錯誤地址')
             }
-        });
+        })
     }
 }
