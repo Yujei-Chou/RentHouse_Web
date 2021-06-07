@@ -7,7 +7,7 @@ const SESS_NAME = 'ssh! this is a secret string'
 const fs = require('fs')
 // create an express(aka web server), and start the server
 const app = express()
-const port = 8217
+const port = 7845
 app.listen(port, () => {
   console.log(`listening on port: ${port}`)
 })
