@@ -45,7 +45,7 @@
               <div style="align-items: center; ">
                 <img style="height: 200px;" src="img/user.jpg">
                 <h3 id="user_name">{{user_info.username}}</h3>
-                <h3 id="user_num">{{user_info.phone}}</h3>
+                <h3 id="user_num">0{{user_info.phone}}</h3>
                 <button class="ui big white button" id="edit_button">編輯</button>
                 <button class="ui big white button" style="display: none;" id="done_button">完成</button>
               </div>
@@ -116,17 +116,18 @@
 
         $('body').on('click', '.x', function(){
           let house_num = $(this).attr('house_num')
-          alert('您確定要刪除這筆房屋資訊嗎?')
-          $.ajax({
-            url: 'delete_house',
-            data: {
-              house_num: house_num
-            },
-            success: function (data){
-              $('#house_amount').html(`已上傳${$('#house_amount').html().match(/\d+/)-1}間房屋`)
-              $(`#house_${house_num}`).remove()
-            }
-          })            
+          if(confirm('您確定要刪除這筆房屋資訊嗎?')){
+            $.ajax({
+              url: 'delete_house',
+              data: {
+                house_num: house_num
+              },
+              success: function (data){
+                $('#house_amount').html(`已上傳${$('#house_amount').html().match(/\d+/)-1}間房屋`)
+                $(`#house_${house_num}`).remove()
+              }
+            })
+          }            
         })
       });
     </script>    

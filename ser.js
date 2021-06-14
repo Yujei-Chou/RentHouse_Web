@@ -155,7 +155,7 @@ app.post('/',CheckAuthenticated ,(req, res) => {
         res.render('index', {'login': 'login', 'user_info':result[0]})
       })
     }else{
-      res.render('login', {'err_msg': '帳號密碼錯誤'})
+      res.render('login', {'err_msg': '帳號密碼有誤'})
     }
   })
   
@@ -232,7 +232,8 @@ app.post('/upload_house', (req, res) => {
         if (err) console.log('fail to update:', err)
       })
     }else{
-      connection.query(`UPDATE house_info SET address='${req.body.address}', structures='${req.body.type}', price=${req.body.price}, kind=${req.body.house_type}, fire=${req.body.fire}, pet=${req.body.pet}, house_info='${req.body.house_info}', user_num=${req.session.userID},picture1='img/housePic/${req.body.house_num}-1.png', picture2='img/housePic/${req.body.house_num}-2.png', region='${req.body.region}', lat=${req.body.lat}, lng=${req.body.lng} WHERE house_num=${req.body.house_num}`, (err, result) => {
+      d = new Date()
+      connection.query(`UPDATE house_info SET address='${req.body.address}', structures='${req.body.type}', price=${req.body.price}, kind=${req.body.house_type}, fire=${req.body.fire}, pet=${req.body.pet}, house_info='${req.body.house_info}', user_num=${req.session.userID},picture1='img/housePic/${req.body.house_num}-1.png?${d.getTime()}', picture2='img/housePic/${req.body.house_num}-2.png?${d.getTime()}', region='${req.body.region}', lat=${req.body.lat}, lng=${req.body.lng} WHERE house_num=${req.body.house_num}`, (err, result) => {
         if (err) console.log('fail to update:', err)
         fs.writeFile(`./dist/img/housePic/${req.body.house_num}-1.png`, req.body.picture1.split('base64,')[1], 'base64', function(err) {
           console.log(err)

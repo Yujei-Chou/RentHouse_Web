@@ -35,7 +35,7 @@
                   登入您的帳號
                 </div>
               </h2>
-              <form class="ui large form" action="/" method="POST">
+              <form class="ui large form" action="/" method="POST" onsubmit="return check();">
                 <div id="login_segment" class="ui segment">
                     <div class="field">
                         <div class="ui left icon input">
@@ -51,7 +51,7 @@
                         <div id="login-error" class="error">{{err_msg}}</div>
                     </div>
                   <button id="login_submit_btn" class="ui fluid brown submit button" type="submit">登入</button>
-                  <div style="text-align: right;  "><a href="#" style="color:brown">忘記密碼?</a></div>
+                  {{!-- <div style="text-align: right;  "><a href="#" style="color:brown">忘記密碼?</a></div> --}}
                 </div>
           
               </form>
@@ -65,5 +65,16 @@
 
     
 </body>
+<script>
+  function check(){
+    let ans = true
+    let phonenumber = /^09[0-9]{8}$/
+    if (!phonenumber.test($('input[name=password]').val())) {
+        $("#login-error").html('帳號密碼有誤')
+        ans = false
+    }
+    return ans
+  }
+</script>
 
 </html>
